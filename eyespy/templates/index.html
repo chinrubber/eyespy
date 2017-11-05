@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="devices" class="table dt-responsive nowrap" width="100%">
+                <thead>
+                    <tr>          
+                        <th>Name</th>
+                        <th>State</th>
+                        <th>Address</th>
+                        <th>Mac</th>
+                        <th>Hostname</th>
+                        <th>Vendor</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script type="text/javascript">
+  
+        var devicetable;
+  
+        $(function(){
+            devicetable = $('#devices').DataTable({
+                "dom": "t",
+                "paging": false,
+                "ajax": {
+                    "url":"/api/v1/devices",
+                    "dataSrc":""
+                },
+                "columns": [
+                    { 
+                       "data": "name"
+                    },
+                    
+                    { 
+                       "data": "up",
+                       "render": function( data, type, row, meta){
+                            if(data){
+                                return "<span class=\"text-success\">Up</span>";
+                            } else {
+                                return "<span class=\"text-danger\">Down</span>";
+                            }
+                         }
+                    },
+                    { "data": "ipaddress" },
+                    { "data": "macaddress" },
+                    { "data": "hostname" },
+                    { "data": "vendor" },
+                    { 
+                      "orderable":false,
+                      "data": "macaddress",
+                      "render": function ( data, type, row, meta ) {
+                            return "<button class=\"btn btn-primary btn-sm\" onclick=\"edit('" + data + "')\">Edit</button>";
+                       }
+                    },
+                ],
+                "rowId": "macaddress"
+            });
+
+            setInterval( function () {
+                devicetable.ajax.reload();
+            }, 15000 );
+        });
+
+        function edit(macaddress){
+            window.location.href = '/devices/' + macaddress;
+        }
+
+
+    </script>
+
+{% endblock %}

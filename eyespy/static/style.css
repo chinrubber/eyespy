@@ -1,0 +1,76 @@
+input, select {
+    border: none!important;
+    box-shadow: none!important;
+    border-bottom: #ddd solid 1px!important;
+    padding-left:0px!important;
+    border-radius:0px!important;
+    font-size:15px!important;
+}
+
+html {     
+    -webkit-font-smoothing: antialiased; 
+} 
+
+body {
+    font: 400 15px/1.8 'Droid Sans', sans-serif;
+    color: #2d2d30;
+}
+
+.navbar {
+    font-family: 'Droid Sans', sans-serif;
+    margin-bottom: 0;
+    background-color: #2d2d30;
+    border: 0;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    position: relative!important;
+}
+
+.navbar li a, .navbar .navbar-brand { 
+    color: #d5d5d5 !important;
+}
+.navbar-nav li a:hover {
+    color: #fff !important;
+}
+.navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #29292c !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: #d5d5d5;
+}
+
+@media only screen
+and (-webkit-min-device-pixel-ratio: 1.25), only screen and ( min-device-pixel-ratio: 1.25), only screen 
+and ( min-resolution: 200dpi), only screen 
+and ( min-resolution: 1.25dppx) {
+    -webkit-font-smoothing: subpixel-antialiased; 
+} 
+
+table thead > tr > th {
+    padding-left:0px!important;
+}
+
+table tbody > tr > td {
+    padding-left:0px!important;
+    vertical-align:middle!important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child {
+    padding-left: 25px!important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+    left: 0px;
+}
+
+table.dataTable {
+    clear: both;
+    margin-top: 0px !important;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+    border-collapse: separate !important
+}
