@@ -12,7 +12,7 @@ COPY requirements.txt /usr/src/app/eyespy/requirements.txt
 
 RUN pip install -r requirements.txt
 
-RUN rm /usr/src/app/eyespy/eyespy/data/eyespy.db
+RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
 ENTRYPOINT [ "python", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0", "-d" ]
 
