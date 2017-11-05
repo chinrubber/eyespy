@@ -1,3 +1,4 @@
 docker_manifest.yml
 migrations/alembic.ini
 *.pyc
+eyespy/data/

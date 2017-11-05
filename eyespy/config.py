@@ -15,4 +15,4 @@ class DefaultConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + INSTANCE_FOLDER_PATH + '/eyespy.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + BaseConfig.PROJECT_ROOT + '/eyespy/data/eyespy.db'
