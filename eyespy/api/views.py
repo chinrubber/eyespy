@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, jsonify, current_app
+from flask import Blueprint, jsonify, current_app, request
 from flask_restful import Api
 from eyespy.device import Device
 from eyespy.extensions import db
@@ -24,3 +24,11 @@ def delete_device(macaddress):
     db.session.delete(device)
     db.session.commit()
     return jsonify(status='ok')
+
+@api.route('/devices/<macaddress>', methods=['PATCH'])
+def patch_device(macaddress):
+    device = Device.query.get(macaddress)
+    for prop in request.json:
+        setattr(device, prop, request.json[prop])
+    db.session.commit()
+    return jsonify(device.serialize)
