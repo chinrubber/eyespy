@@ -1,7 +1,7 @@
 FROM python:2
 
 ENV FLASK_APP=wsgi.pi
-ENV FLASK_DEBUG=0
+ENV FLASK_DEBUG=1
 
 WORKDIR /usr/src/app/eyespy
 
@@ -15,6 +15,6 @@ RUN pip install -r requirements.txt
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
-ENTRYPOINT [ "python", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0" ]
+ENTRYPOINT [ "python", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0", "-d" ]
 
 EXPOSE 8000
