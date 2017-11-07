@@ -71,10 +71,8 @@ class Discovery():
                 device = db.session.merge(discovered_device)
                 if not device.lastseen:
                     print 'New Device'
-                else:
-                    print 'Existing Device'
-                    print device.lastseen
                 device.lastseen = datetime.now().replace(microsecond=0)
+                device.hostname = self.resolve(device.ipaddress)
                 db.session.commit()
 
     def scan_all(self, net, interface, timeout=10):
@@ -92,3 +90,11 @@ class Discovery():
             else:
                 raise
         return discovereddevices
+
+    def resolve(ipaddress):
+        try:
+            hostname = socket.gethostbyaddr(ipaddress)[0]
+        except socket.herror:
+            return None
+
+        return hostname
