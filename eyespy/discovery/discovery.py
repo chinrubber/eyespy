@@ -91,10 +91,10 @@ class Discovery():
                 raise
         return discovereddevices
 
-    def resolve(ipaddress):
+    def resolve(self, ipaddress):
         try:
             hostname = socket.gethostbyaddr(ipaddress)[0]
         except socket.herror:
-            return None
+            return 'unknown'
 
         return hostname

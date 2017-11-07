@@ -12,7 +12,7 @@ class BaseConfig(object):
 
 class DefaultConfig(BaseConfig):
 
-    DEBUG = False
+    DEBUG = True
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + BaseConfig.PROJECT_ROOT + '/eyespy/data/eyespy.db'
