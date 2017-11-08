@@ -6,3 +6,4 @@ flask_script
 APScheduler
 scapy-python3
 netifaces
+requests

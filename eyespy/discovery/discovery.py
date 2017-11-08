@@ -4,6 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from eyespy.extensions import db
 from eyespy.device import Device
 from datetime import datetime
+from requests import RequestException
 import scapy.config
 import scapy.layers.l2
 import scapy.route
@@ -11,6 +12,7 @@ import math
 import netifaces
 import socket
 import errno
+import requests
 
 class Discovery():
 
@@ -70,7 +72,7 @@ class Discovery():
             for discovered_device in discovered_devices:
                 device = db.session.merge(discovered_device)
                 if not device.lastseen:
-                    print('New Device')
+                    device.vendor = self.lookup_vendor(device.macaddress)
                 device.lastseen = datetime.now().replace(microsecond=0)
                 device.hostname = self.resolve(device.ipaddress)
                 db.session.commit()
@@ -98,3 +100,13 @@ class Discovery():
             return 'unknown'
 
         return hostname
+
+    def lookup_vendor(self, macaddress):
+        try:
+            response = requests.get('http://api.macvendors.com/%s' % macaddress)
+            if response.status_code == 200:
+                return response.text
+        except RequestException as e:
+            pass
+        
+        return None
