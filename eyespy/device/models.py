@@ -8,10 +8,10 @@ from datetime import datetime
 class Device(db.Model):
 
     macaddress = Column(db.String(STRING_LEN), primary_key=True)
-    ipaddress = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    ipaddress = Column(db.String(STRING_LEN), nullable=False, unique=False)
     name = Column(db.String(STRING_LEN), nullable=True, unique=True)
-    vendor = Column(db.String(STRING_LEN), nullable=True, unique=True)
-    hostname = Column(db.String(STRING_LEN), nullable=True, unique=True)
+    vendor = Column(db.String(STRING_LEN), nullable=True, unique=False)
+    hostname = Column(db.String(STRING_LEN), nullable=True, unique=False)
     lastseen = Column(db.DateTime(), nullable=False, unique=False, default=datetime.now().replace(microsecond=0))
 
     def up(self):

@@ -24,7 +24,7 @@ class Discovery():
     def init(self, app):
         self.app = app
         self.scheduler.start()
-
+     
     def shutdown(self):
         self.scheduler.shutdown()
 
@@ -97,7 +97,7 @@ class Discovery():
         try:
             hostname = socket.gethostbyaddr(ipaddress)[0]
         except socket.herror:
-            return 'unknown'
+            return None
 
         return hostname
 
