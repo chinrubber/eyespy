@@ -4,5 +4,5 @@ flask_sqlalchemy
 Flask-Migrate
 flask_script
 APScheduler
-scapy
+scapy-python3
 netifaces
