@@ -70,7 +70,7 @@ class Discovery():
             for discovered_device in discovered_devices:
                 device = db.session.merge(discovered_device)
                 if not device.lastseen:
-                    print 'New Device'
+                    print('New Device')
                 device.lastseen = datetime.now().replace(microsecond=0)
                 device.hostname = self.resolve(device.ipaddress)
                 db.session.commit()

@@ -25,8 +25,8 @@ def configure_app(app, config=None):
         app.config.from_object(config)
 
 def configure_blueprints(app):
-    from api import api
-    from ui import ui
+    from eyespy.api import api
+    from eyespy.ui import ui
 
     for bp in [api, ui]:
         app.register_blueprint(bp)
