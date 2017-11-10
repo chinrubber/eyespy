@@ -11,7 +11,7 @@ __all__ = ['create_app']
 def create_app(config=None, app_name=None):
     if app_name is None:
         app_name = DefaultConfig.PROJECT
-    app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
+    app = Flask(app_name)#, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
     configure_app(app, config)
     configure_blueprints(app)
     configure_logging(app)
@@ -33,27 +33,38 @@ def configure_blueprints(app):
 
 def configure_extensions(app):
     db.init_app(app)
-    discovery.init(app)
+    discovery.init_app(app)
 
 def configure_logging(app):
     if app.debug or app.testing:
         return
 
     import logging
-    import os
+    import os, sys
     from logging.handlers import RotatingFileHandler
 
-    app.logger.setLevel(logging.INFO)
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
 
-    info_log = os.path.join(app.config['LOG_FOLDER'], 'info.log')
+    #'%(asctime)s [%(pathname)s:%(lineno)d] %(levelname)s: %(message)s'
+
+    log_formatter = logging.Formatter(
+         '%(asctime)s %(levelname)s: %(message)s'
+         )
+
+    info_stdout_handler = logging.StreamHandler(sys.stdout)
+    info_stdout_handler.setLevel(logging.DEBUG)
+    info_stdout_handler.setFormatter(log_formatter)
+
+    info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'info.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
-    info_file_handler.setLevel(logging.INFO)
-    info_file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s '
-        '[in %(pathname)s:%(lineno)d]')
-    )
+    info_file_handler.setLevel(logging.DEBUG)
+    info_file_handler.setFormatter(log_formatter)
     
-    app.logger.addHandler(info_file_handler)
+    root.addHandler(info_file_handler)
+    root.addHandler(info_stdout_handler)
+
+
 
 
 

@@ -13,18 +13,26 @@ import netifaces
 import socket
 import errno
 import requests
+import logging
+
+logger = logging.getLogger()
 
 class Discovery():
 
     def __init__(self):
-        self.scheduler = BackgroundScheduler()
-        self.scheduler.add_job(self.scan, 'interval', seconds=15, max_instances=1)
-        self.set_net()
+        self.app = None
+        self.scaninterface = None
+        self.scannet = None
+        self.scheduler = None
+        self.logger = None
 
-    def init(self, app):
+    def init_app(self, app):
         self.app = app
+        self.set_net()
+        self.scheduler = BackgroundScheduler()
         self.scheduler.start()
-     
+        self.scheduler.add_job(self.scan, 'interval', seconds=15, max_instances=1)
+        
     def shutdown(self):
         self.scheduler.shutdown()
 
@@ -56,6 +64,7 @@ class Discovery():
         return 32 - int(round(math.log(0xFFFFFFFF - arg, 2)))
 
     def scan(self):
+        logging.info('Scanning for devices')
         discovereddevices = []
         local = netifaces.ifaddresses(self.scaninterface)
         localhwaddress =  local[netifaces.AF_LINK][0]['addr']
@@ -70,6 +79,7 @@ class Discovery():
     def persist(self, discovered_devices):
         with self.app.app_context():
             for discovered_device in discovered_devices:
+                logging.debug("Found device %s" % discovered_device.macaddress)
                 device = db.session.merge(discovered_device)
                 if not device.lastseen:
                     device.vendor = self.lookup_vendor(device.macaddress)
@@ -88,7 +98,7 @@ class Discovery():
                 discovereddevices.append(device)
         except socket.error as e:
             if e.errno == errno.EPERM:
-                print('Operation not permitted')
+                pass
             else:
                 raise
         return discovereddevices

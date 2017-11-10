@@ -13,8 +13,8 @@ manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 
-with app.app_context():
-    command.upgrade(migrate.get_config(), 'head')
+# with app.app_context():
+#     command.upgrade(migrate.get_config(), 'head')
 
 if __name__ == '__main__':
     manager.run()
