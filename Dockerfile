@@ -17,6 +17,6 @@ RUN mkdir /usr/src/app/eyespy/eyespy/data/logs
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
-ENTRYPOINT [ "python3", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0", "-d" ]
+ENTRYPOINT [ "python3", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0"]
 
 EXPOSE 8000
