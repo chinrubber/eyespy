@@ -11,7 +11,9 @@ COPY manage.py /usr/src/app/eyespy/manage.py
 COPY wsgi.py /usr/src/app/eyespy/wsgi.py
 COPY requirements.txt /usr/src/app/eyespy/requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN mkdir /usr/src/app/eyespy/eyespy/data/logs
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
