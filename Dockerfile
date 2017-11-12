@@ -15,7 +15,6 @@ RUN pip install -r requirements.txt
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
-RUN mkdir /usr/src/app/eyespy/eyespy/data/settings
 RUN mkdir /usr/src/app/eyespy/eyespy/data/db
 RUN mkdir /usr/src/app/eyespy/eyespy/data/logs
 
