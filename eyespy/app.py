@@ -4,7 +4,6 @@ from flask import Flask, current_app
 from eyespy.config import DefaultConfig
 from eyespy.extensions import db, mail
 from eyespy.components import discovery
-import logging
 
 __all__ = ['create_app']
 
@@ -21,8 +20,6 @@ def create_app(config=None, app_name=None):
 def configure_app(app):
     app.config.from_object('eyespy.data.settings.settings')
     app.config.from_object(DefaultConfig)
-
-    logging.debug(app.config)
 
 def configure_blueprints(app):
     from eyespy.api import api
