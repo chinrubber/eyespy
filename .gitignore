@@ -1,3 +1,5 @@
 docker_manifest.yml
 *.pyc
-eyespy/data/
+eyespy/data/db
+eyespy/data/logs
+.vscode/

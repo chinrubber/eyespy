@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from eyespy.extensions import db
+from eyespy.extensions import db, mail
 from eyespy.device import Device
 from datetime import datetime
 from requests import RequestException
+from flask_mail import Message
 import scapy.config
 import scapy.layers.l2
 import scapy.route
@@ -120,3 +121,12 @@ class Discovery():
             pass
         
         return None
+
+    def mail(self):
+        self.send_email('Test', 'grant@grantwebb.com', ['grant@grantwebb.com'], "Test Body", "Test Body")
+
+    def send_email(self, subject, sender, recipients, text_body, html_body):
+        msg = Message(subject, sender=sender, recipients=recipients)
+        msg.body = text_body
+        msg.html = html_body
+        mail.send(msg)

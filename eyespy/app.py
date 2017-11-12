@@ -2,27 +2,27 @@
 
 from flask import Flask, current_app
 from eyespy.config import DefaultConfig
-from eyespy.utils import INSTANCE_FOLDER_PATH
-from eyespy.extensions import db
+from eyespy.extensions import db, mail
 from eyespy.components import discovery
+import logging
 
 __all__ = ['create_app']
 
 def create_app(config=None, app_name=None):
     if app_name is None:
         app_name = DefaultConfig.PROJECT
-    app = Flask(app_name)#, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
-    configure_app(app, config)
-    configure_blueprints(app)
+    app = Flask(app_name)
     configure_logging(app)
+    configure_app(app)
+    configure_blueprints(app)
     configure_extensions(app)
     return app
 
-def configure_app(app, config=None):
+def configure_app(app):
+    app.config.from_object('eyespy.data.settings.settings')
     app.config.from_object(DefaultConfig)
 
-    if config:
-        app.config.from_object(config)
+    logging.debug(app.config)
 
 def configure_blueprints(app):
     from eyespy.api import api
@@ -34,6 +34,7 @@ def configure_blueprints(app):
 def configure_extensions(app):
     db.init_app(app)
     discovery.init_app(app)
+    mail.init_app(app)
 
 def configure_logging(app):
     if app.debug or app.testing:

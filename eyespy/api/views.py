@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, current_app, request
 from flask_restful import Api
 from eyespy.device import Device
 from eyespy.extensions import db
+import logging
 
 api = Blueprint('api', __name__, url_prefix='/api/v1')
 api_wrap = Api(api)
