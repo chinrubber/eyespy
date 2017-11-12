@@ -15,6 +15,10 @@ RUN pip install -r requirements.txt
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
+RUN mkdir /usr/src/app/eyespy/eyespy/data/settings
+RUN mkdir /usr/src/app/eyespy/eyespy/data/db
+RUN mkdir /usr/src/app/eyespy/eyespy/data/logs
+
 RUN python3 manage.py db upgrade
 
 ENTRYPOINT [ "python3", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0" ]
