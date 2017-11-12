@@ -15,6 +15,8 @@ RUN pip install -r requirements.txt
 
 RUN rm -f /usr/src/app/eyespy/eyespy/data/eyespy.db
 
+RUN python3 manage.py db upgrade
+
 ENTRYPOINT [ "python3", "manage.py", "runserver", "-p", "8000", "-h", "0.0.0.0" ]
 
 EXPOSE 8000
