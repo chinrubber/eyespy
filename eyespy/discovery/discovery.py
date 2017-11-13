@@ -4,7 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from eyespy.extensions import db, mail
 from eyespy.device import Device
 from datetime import datetime
-from requests import RequestException
+from requests import RequestException, Timeout
 from flask_mail import Message
 import scapy.config
 import scapy.layers.l2
@@ -88,9 +88,10 @@ class Discovery():
                 device = db.session.merge(discovered_device)
                 device.hostname = self.resolve(device.ipaddress)
                 if not device.lastseen:
-                    device.vendor = self.lookup_vendor(device.macaddress)
-                    device.name = '_New_'
+                    device.name = '_New'
                     new_devices.append(device)
+                if not device.vendor:
+                    device.vendor = self.lookup_vendor(device.macaddress)
                 device.lastseen = datetime.now().replace(microsecond=0)
             
             db.session.commit()
@@ -125,13 +126,15 @@ class Discovery():
 
     def lookup_vendor(self, macaddress):
         try:
-            response = requests.get('http://api.macvendors.com/%s' % macaddress, timeout=10)
+            response = requests.get('http://api.macvendors.com/%s' % macaddress, timeout=1.5)
             if response.status_code == 200:
                 return response.text
+        except Timeout as t:
+            logging.warn("Timed out resolving mac address from api.macvendors.com")
+            return None
         except RequestException as e:
-            pass
-        
-        return None
+            logging.error("Unable to resolve mac address from api.macvendors.com")
+            return None
    
     def send_email(self, subject, text_body, html_body):
         sender = self.app.config['NOTIFY_FROM_ADDRESS']
