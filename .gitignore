@@ -3,3 +3,4 @@ docker_manifest.yml
 eyespy/data/db
 eyespy/data/logs
 .vscode/
+__pycache__/

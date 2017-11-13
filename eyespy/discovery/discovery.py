@@ -15,6 +15,7 @@ import socket
 import errno
 import requests
 import logging
+from flask import render_template
 
 logger = logging.getLogger()
 
@@ -79,14 +80,24 @@ class Discovery():
 
     def persist(self, discovered_devices):
         with self.app.app_context():
+
+            new_devices = []
+
             for discovered_device in discovered_devices:
                 logging.debug("Found device %s" % discovered_device.macaddress)
                 device = db.session.merge(discovered_device)
+                device.hostname = self.resolve(device.ipaddress)
                 if not device.lastseen:
                     device.vendor = self.lookup_vendor(device.macaddress)
+                    device.name = '_New_'
+                    new_devices.append(device)
                 device.lastseen = datetime.now().replace(microsecond=0)
-                device.hostname = self.resolve(device.ipaddress)
-                db.session.commit()
+            
+            db.session.commit()
+
+            if len(new_devices) > 0:
+                self.send_new_devices_email(new_devices)
+
 
     def scan_all(self, net, interface, timeout=10):
         discovereddevices = []
@@ -121,12 +132,15 @@ class Discovery():
             pass
         
         return None
-
-    def mail(self):
-        self.send_email('Test', 'grant@grantwebb.com', ['grant@grantwebb.com'], "Test Body", "Test Body")
-
-    def send_email(self, subject, sender, recipients, text_body, html_body):
+   
+    def send_email(self, subject, text_body, html_body):
+        sender = self.app.config['NOTIFY_FROM_ADDRESS']
+        recipients = [self.app.config['NOTIFY_TO_ADDRESS']]
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.body = text_body
         msg.html = html_body
         mail.send(msg)
+
+    def send_new_devices_email(self, devices):
+        self.send_email('EyesPy - New Device(s) Detected', 'Test',
+            render_template('email_new_devices.html', devices=devices))

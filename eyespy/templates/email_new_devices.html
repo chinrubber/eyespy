@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <style>
+            td, th {
+                padding:5px;
+                text-align:left;
+            }
+        </style>
+    </head>
+    <body>
+        <p>New Device(s) Detected</p>
+        <table>
+            <thead>
+                <th>Address</th>
+                <th>Mac</th>
+                <th>Hostname</th>
+                <th>Vendor</th>
+            </thead>
+            <tbody>
+            {% for device in devices %}
+                <tr valign="top">
+                    <td>{{ device.ipaddress }}</td>
+                    <td>{{ device.macaddress }}</td>
+                    <td>{{ device.hostname }}</td>
+                    <td>{{ device.vendor }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

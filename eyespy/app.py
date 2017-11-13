@@ -4,12 +4,12 @@ from flask import Flask, current_app
 from eyespy.config import DefaultConfig
 from eyespy.extensions import db, mail
 from eyespy.components import discovery
+import logging
 
 __all__ = ['create_app']
 
-def create_app(config=None, app_name=None):
-    if app_name is None:
-        app_name = DefaultConfig.PROJECT
+def create_app():
+    app_name = DefaultConfig.PROJECT
     app = Flask(app_name)
     configure_logging(app)
     configure_app(app)
@@ -19,14 +19,15 @@ def create_app(config=None, app_name=None):
 
 def configure_app(app):
     app.config.from_object('eyespy.data.settings.settings')
+    app.config.from_envvar('EYESPY_SETTINGS')
     app.config.from_object(DefaultConfig)
 
 def configure_blueprints(app):
     from eyespy.api import api
     from eyespy.ui import ui
 
-    for bp in [api, ui]:
-        app.register_blueprint(bp)
+    app.register_blueprint(api)
+    app.register_blueprint(ui)
 
 def configure_extensions(app):
     db.init_app(app)
@@ -44,8 +45,6 @@ def configure_logging(app):
     root = logging.getLogger()
     root.setLevel(logging.DEBUG)
 
-    #'%(asctime)s [%(pathname)s:%(lineno)d] %(levelname)s: %(message)s'
-
     log_formatter = logging.Formatter(
          '%(asctime)s %(levelname)s: %(message)s'
          )
@@ -54,7 +53,7 @@ def configure_logging(app):
     info_stdout_handler.setLevel(logging.DEBUG)
     info_stdout_handler.setFormatter(log_formatter)
 
-    info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'info.log')
+    info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
     info_file_handler.setLevel(logging.DEBUG)
     info_file_handler.setFormatter(log_formatter)

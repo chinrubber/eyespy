@@ -25,8 +25,7 @@ def upgrade():
     sa.Column('vendor', sa.String(length=255), nullable=True),
     sa.Column('hostname', sa.String(length=255), nullable=True),
     sa.Column('lastseen', sa.DateTime(), nullable=False),
-    sa.PrimaryKeyConstraint('macaddress'),
-    sa.UniqueConstraint('name')
+    sa.PrimaryKeyConstraint('macaddress')
     )
     # ### end Alembic commands ###
 
