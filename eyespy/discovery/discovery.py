@@ -125,7 +125,7 @@ class Discovery():
 
     def lookup_vendor(self, macaddress):
         try:
-            response = requests.get('http://api.macvendors.com/%s' % macaddress)
+            response = requests.get('http://api.macvendors.com/%s' % macaddress, timeout=10)
             if response.status_code == 200:
                 return response.text
         except RequestException as e:
