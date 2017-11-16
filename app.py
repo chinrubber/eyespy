@@ -13,12 +13,3 @@ from eyespy import create_app
 
 app = create_app()
 
-migrate = Migrate(app, db)
-manager = Manager(app)
-
-manager.add_command('db', MigrateCommand)
-
-
-
-with app.app_context():
-    command.upgrade(migrate.get_config(), 'head')

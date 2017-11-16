@@ -1,6 +1,6 @@
 docker_manifest.yml
 *.pyc
-eyespy/data/db
+eyespy/data/db/eyespy.db
 eyespy/data/logs
 .vscode/
 __pycache__/
