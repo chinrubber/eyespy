@@ -3,7 +3,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from eyespy.extensions import db, mail
 from eyespy.device import Device
-from datetime import datetime
+from datetime import datetime, timedelta
 from requests import RequestException, Timeout
 from flask_mail import Message
 import scapy.config
@@ -34,7 +34,7 @@ class Discovery():
         self.scheduler = BackgroundScheduler()
         self.scheduler.start()
         self.scheduler.add_job(self.scan, 'interval', seconds=15, max_instances=1)
-        
+               
     def shutdown(self):
         self.scheduler.shutdown()
 
@@ -84,10 +84,10 @@ class Discovery():
             new_devices = []
 
             for discovered_device in discovered_devices:
-                logging.debug("Found device %s" % discovered_device.macaddress)
                 device = db.session.merge(discovered_device)
                 device.hostname = self.resolve(device.ipaddress)
                 if not device.lastseen:
+                    logging.debug('Device %s is new' % device.macaddress)
                     device.name = '_New'
                     new_devices.append(device)
                 if not device.vendor:
@@ -108,6 +108,7 @@ class Discovery():
                 device = Device()
                 device.macaddress = r.src
                 device.ipaddress = r.psrc
+                logging.debug('Discovered device %s with ip %s' % (r.src, r.psrc))
                 discovereddevices.append(device)
         except socket.error as e:
             if e.errno == errno.EPERM:
