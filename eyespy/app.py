@@ -5,6 +5,7 @@ from eyespy.config import DefaultConfig
 from eyespy.extensions import db, mail
 from eyespy.components import discovery
 import logging
+import os
 
 __all__ = ['create_app']
 
@@ -52,6 +53,8 @@ def configure_logging(app):
     info_stdout_handler = logging.StreamHandler(sys.stdout)
     info_stdout_handler.setLevel(logging.DEBUG)
     info_stdout_handler.setFormatter(log_formatter)
+
+    os.makedirs(DefaultConfig.LOG_FOLDER)
 
     info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
