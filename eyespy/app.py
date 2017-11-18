@@ -57,6 +57,9 @@ def configure_logging(app):
     if not os.path.isdir(DefaultConfig.LOG_FOLDER):
         os.makedirs(DefaultConfig.LOG_FOLDER)
 
+    if not os.path.isdir(DefaultConfig.SETTINGS_FOLDER):
+        os.makedirs(DefaultConfig.SETTINGS_FOLDER)
+
     info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
     info_file_handler.setLevel(logging.DEBUG)
