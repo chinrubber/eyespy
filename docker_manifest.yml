@@ -1,0 +1,10 @@
+image: chinrubber/eyespy:2.0.0
+manifests:
+  - image: chinrubber/eyespy-arm:2.0.0
+    platform:
+      architecture: arm
+      os: linux
+  - image: chinrubber/eyespy-amd64:2.0.0
+    platform:
+      architecture: amd64
+      os: linux
