@@ -32,7 +32,15 @@
   
         $(function(){
             devicetable = $('#devices').DataTable({
-                "dom": "t",
+                "dom": "Bt",
+                "buttons": [
+                    {
+                        extend: "csvHtml5",
+                        exportOptions: {
+                            columns: [0, 2, 3, 4, 5]
+                        }
+                    }
+                ],
                 "paging": false,
                 "ajax": {
                     "url":"/api/v1/devices",
