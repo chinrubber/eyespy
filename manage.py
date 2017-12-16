@@ -6,14 +6,14 @@ from eyespy.config import DefaultConfig
 from eyespy import create_app
 from eyespy.extensions import db
 
-app = create_app()
+application = create_app()
 
-migrate = Migrate(app, db)
-manager = Manager(app)
+migrate = Migrate(application, db)
+manager = Manager(application)
 
 manager.add_command('db', MigrateCommand)
 
-with app.app_context():
+with application.app_context():
      command.upgrade(migrate.get_config(), 'head')
 
 if __name__ == '__main__':
