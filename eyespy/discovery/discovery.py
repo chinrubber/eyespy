@@ -130,6 +130,8 @@ class Discovery():
             response = requests.get('http://api.macvendors.com/%s' % macaddress, timeout=1.5)
             if response.status_code == 200:
                 return response.text
+            if response.status_code == 404:
+                return 'Unknown'
         except Timeout as t:
             logging.warn("Timed out resolving mac address from api.macvendors.com")
             return None

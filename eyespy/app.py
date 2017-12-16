@@ -4,6 +4,7 @@ from flask import Flask, current_app
 from eyespy.config import DefaultConfig
 from eyespy.extensions import db, mail
 from eyespy.components import discovery
+from eyespy.setting import Setting
 import logging
 import os
 
@@ -19,8 +20,6 @@ def create_app():
     return app
 
 def configure_app(app):
-    app.config.from_object('eyespy.data.settings.settings')
-    app.config.from_envvar('EYESPY_SETTINGS', silent=True)
     app.config.from_object(DefaultConfig)
 
 def configure_blueprints(app):
@@ -56,10 +55,6 @@ def configure_logging(app):
 
     if not os.path.isdir(DefaultConfig.LOG_FOLDER):
         os.makedirs(DefaultConfig.LOG_FOLDER)
-
-    if not os.path.isdir(DefaultConfig.SETTINGS_FOLDER):
-        os.makedirs(DefaultConfig.SETTINGS_FOLDER)
-        open(DefaultConfig.SETTINGS_FOLDER, "settings.py")
 
     info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
     info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)

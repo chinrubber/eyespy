@@ -13,8 +13,7 @@ class Device(db.Model):
     vendor = Column(db.String(STRING_LEN), nullable=True, unique=False)
     hostname = Column(db.String(STRING_LEN), nullable=True, unique=False)
     lastseen = Column(db.DateTime(), nullable=False, unique=False, default=datetime.now().replace(microsecond=0))
-    important = Column(db.Boolean(), nullable=False, default=False)
-
+   
     def up(self):
         return (datetime.now() - self.lastseen).total_seconds() < 120
 
