@@ -53,15 +53,15 @@ def configure_logging(app):
     info_stdout_handler.setLevel(logging.DEBUG)
     info_stdout_handler.setFormatter(log_formatter)
 
-    if not os.path.isdir(DefaultConfig.LOG_FOLDER):
-        os.makedirs(DefaultConfig.LOG_FOLDER)
+    # if not os.path.isdir(DefaultConfig.LOG_FOLDER):
+    #     os.makedirs(DefaultConfig.LOG_FOLDER)
 
-    info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
-    info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
-    info_file_handler.setLevel(logging.DEBUG)
-    info_file_handler.setFormatter(log_formatter)
+    # info_log = os.path.join(DefaultConfig.LOG_FOLDER, 'eyespy.log')
+    # info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
+    # info_file_handler.setLevel(logging.DEBUG)
+    # info_file_handler.setFormatter(log_formatter)
     
-    root.addHandler(info_file_handler)
+    # root.addHandler(info_file_handler)
     root.addHandler(info_stdout_handler)
 
 
