@@ -9,7 +9,6 @@ class BaseConfig(object):
     PROJECT = "eyespy"
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     LOG_FOLDER = os.path.join(PROJECT_ROOT, 'eyespy/data/logs')
-    SETTINGS_FOLDER = os.path.join(PROJECT_ROOT, 'eyespy/data/settings')
 
 class DefaultConfig(BaseConfig):
 
