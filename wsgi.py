@@ -16,3 +16,5 @@ migrate = Migrate(app, db)
 
 with app.app_context():
      command.upgrade(migrate.get_config(), 'head')
+
+app.run()
