@@ -16,4 +16,5 @@ manager.add_command('db', MigrateCommand)
 with app.app_context():
      command.upgrade(migrate.get_config(), 'head')
 
-app.run()
+if __name__ == '__main__':
+    manager.run()
