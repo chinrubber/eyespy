@@ -4,7 +4,6 @@ from flask import Flask, current_app
 from eyespy.config import DefaultConfig
 from eyespy.extensions import db, mail
 from eyespy.components import discovery
-from eyespy.setting import Setting
 import logging
 import os
 
