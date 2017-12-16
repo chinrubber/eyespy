@@ -1,5 +1,4 @@
 *.pyc
-eyespy/data/db/eyespy.db
-eyespy/data/logs
+eyespy/data
 .vscode/
 __pycache__/
