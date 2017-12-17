@@ -13,8 +13,8 @@ application = create_app()
 
 migrate = Migrate(application, db)
 
-with application.app_context():
-    command.upgrade(migrate.get_config(), 'head')
+# with application.app_context():
+#     command.upgrade(migrate.get_config(), 'head')
 
 if __name__ == "__main__":
     application.run()
