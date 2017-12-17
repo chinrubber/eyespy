@@ -6,6 +6,6 @@ COPY ./ /usr/src/app
 
 RUN pip install --requirement requirements.txt
 
-ENTRYPOINT [ "gunicorn", "wsgi", "--bind=0.0.0.0:8080", "--access-logfile=-", "--config=" ]
+ENTRYPOINT [ "gunicorn", "wsgi", "--bind=0.0.0.0:8888", "--access-logfile=-", "--config=" ]
 
-EXPOSE 8080
+EXPOSE 8888

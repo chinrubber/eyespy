@@ -3,3 +3,4 @@ __pycache__
 docker_manifest.yml
 Dockerfile
 */data/eyespy.db
+manifest.md
