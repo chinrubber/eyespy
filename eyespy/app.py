@@ -19,6 +19,8 @@ def create_app():
     return app
 
 def configure_app(app):
+    app.config.from_object('eyespy.data.settings')
+    app.config.from_envvar('EYESPY_SETTINGS', silent=True)
     app.config.from_object(DefaultConfig)
 
 def configure_blueprints(app):
