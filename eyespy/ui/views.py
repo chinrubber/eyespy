@@ -8,10 +8,6 @@ ui = Blueprint('ui', __name__)
 def index():
     return render_template('index.html')
 
-@ui.route('/settings')
-def settings():
-    return render_template('settings.html')
-
 @ui.route('/devices/<macaddress>')
 def edit_device(macaddress):
     return render_template('device.html')
