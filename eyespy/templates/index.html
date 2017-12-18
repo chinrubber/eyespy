@@ -32,7 +32,7 @@
   
         $(function(){
             devicetable = $('#devices').DataTable({
-                "dom": "Bt",
+                "dom": "t",
                 "buttons": [
                     {
                         extend: "csvHtml5",
@@ -50,7 +50,6 @@
                     { 
                        "data": "name"
                     },
-                    
                     { 
                        "data": "up",
                        "render": function( data, type, row, meta){

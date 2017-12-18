@@ -8,6 +8,14 @@
                 <input type="text" class="form-control" id="name">
             </div>
             <div class="form-group">
+                <label for="">Important</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="important"> Yes
+                    </label>
+                </div>
+              </div>
+            <div class="form-group">
                 <label>Address</label>
                 <p id="ipaddress"/>
             </div>
@@ -42,8 +50,10 @@
 
       $("#save").click(function(){
             var name = $("#name").val();
+            var important = $("#important").is(":checked");
             var json = {
                 "name" : name,
+                "important" : important
             }
 
             $.ajax({
@@ -83,6 +93,7 @@
             $("#ipaddress").html(device.ipaddress);
             $("#vendor").html(device.vendor);  
             $("#hostname").html(device.hostname); 
+            $("#important").prop( "checked", device.important);
          },
           error(xhr, status, error){
             console.log(xhr);
