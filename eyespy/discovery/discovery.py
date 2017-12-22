@@ -72,7 +72,7 @@ class Discovery():
         return 32 - int(round(math.log(0xFFFFFFFF - arg, 2)))
 
     def scan(self):
-        logging.info('Scanning for devices')
+        logging.info('Scanning for devices on %s if with net %s ' % self.scaninterface, self.scannet )
         discovereddevices = []
         local = netifaces.ifaddresses(self.scaninterface)
         localhwaddress =  local[netifaces.AF_LINK][0]['addr']
