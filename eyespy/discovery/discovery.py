@@ -16,6 +16,7 @@ import errno
 import requests
 import logging
 from flask import render_template
+from os import environ
 
 logger = logging.getLogger()
 
@@ -44,7 +45,12 @@ class Discovery():
                 continue
             if netmask <= 0 or netmask == 0xFFFFFFFF:
                 continue
-            net = self.to_CIDR_notation(network, netmask)
+            if environ.get('EYESPY_NET') is not None:
+                logging.info('EYESPY_NET value is %s ' % environ.get('EYESPY_NET') )
+                net = environ.get('EYESPY_NET')
+            else :
+                net = self.to_CIDR_notation(network, netmask)
+                logging.info('EYESPY_NET was not present so using %s ' % net)
             if interface != scapy.config.conf.iface:
                 continue
             if net:
