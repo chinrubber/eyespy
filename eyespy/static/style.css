@@ -74,3 +74,7 @@ table.dataTable {
     max-width: none !important;
     border-collapse: separate !important
 }
+
+.important {
+    font-weight:600 !important;
+}

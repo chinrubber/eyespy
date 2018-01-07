@@ -72,7 +72,12 @@
                        }
                     },
                 ],
-                "rowId": "macaddress"
+                "rowId": "macaddress",
+				createdRow: function( row, data, dataIndex ) {
+    			    if ( data['important'] ) {
+						$('td:eq(0)', row).addClass( 'important' );
+    		    	}
+				}
             });
 
             setInterval( function () {
