@@ -27,5 +27,6 @@ class Device(db.Model):
             'vendor': self.vendor,
             'hostname': self.hostname,
             'important': self.important,
-            'up': self.up
+            'up': self.up,
+            'lastseen': self.lastseen
         }

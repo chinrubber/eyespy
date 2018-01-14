@@ -13,6 +13,7 @@
                         <th>Mac</th>
                         <th>Hostname</th>
                         <th>Vendor</th>
+			<th>Last Seen</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,7 +38,7 @@
                     {
                         extend: "csvHtml5",
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5]
+                            columns: [0, 2, 3, 4, 5, 6]
                         }
                     }
                 ],
@@ -64,6 +65,7 @@
                     { "data": "macaddress" },
                     { "data": "hostname" },
                     { "data": "vendor" },
+		    { "data": "lastseen" },
                     { 
                       "orderable":false,
                       "data": "macaddress",

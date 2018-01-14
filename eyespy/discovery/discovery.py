@@ -80,31 +80,57 @@ class Discovery():
         device = Device()
         device.macaddress = localhwaddress
         device.ipaddress = localipaddress
+        device.hostname = self.resolve(localipaddress)
+        device.lastseen = datetime.now().replace(microsecond=0)
+        device.up = True
         discovereddevices.append(device)
         discovereddevices.extend(self.scan_all(self.scannet, self.scaninterface))
         self.persist(discovereddevices)
 
     def persist(self, discovered_devices):
         with self.app.app_context():
-
-            new_devices = []
-
-            for discovered_device in discovered_devices:
-                device = db.session.merge(discovered_device)
-                device.hostname = self.resolve(device.ipaddress)
-                if not device.lastseen:
-                    logging.debug('Device %s is new' % device.macaddress)
-                    device.name = '_New'
-                    new_devices.append(device)
+            state_change_devices = []
+            for device in Device.query.all():
                 if not device.vendor:
                     device.vendor = self.lookup_vendor(device.macaddress)
-                device.lastseen = datetime.now().replace(microsecond=0)
-            
+                d_device = self.find_device(discovered_devices, device)
+                if not d_device:
+                    if device.up and device.important and (datetime.now() - device.lastseen).total_seconds() > 30:
+                        logging.info('State for important device %s (%s) has changed from up to down' % (device.macaddress, device.name))
+                        state_change_devices.append(device)
+                        device.up = False
+                else:
+                    if not device.up and device.important:
+                        logging.info('State for important device %s (%s) has changed from down to up' % (device.macaddress, device.name))
+                        state_change_devices.append(device)
+                    if d_device.ipaddress != device.ipaddress:
+                        logging.info('Ip address for % has changed from %s to %s' % (device.macaddress, device.ipaddress, d_device.ipaddress))
+                    if d_device.hostname !=device.hostname:
+                        logging.info('Hostname for %s has changed from %s to %s' % (device.macaddress, device.hostname, d_device.hostname))
+
+                    device = db.session.merge(d_device)
+
+            for device in discovered_devices:
+                device = db.session.merge(device)
+                device.vendor = self.lookup_vendor(device.macaddress)
+
             db.session.commit()
 
-            if len(new_devices) > 0:
-                self.send_new_devices_email(new_devices)
+            if len(state_change_devices) > 0:
+                self.send_state_change_device_email(state_change_devices)
 
+            if len(discovered_devices) > 0:
+                self.send_new_devices_email(discovered_devices)
+
+    def find_device(self, devices, src_device):
+        i = 0
+        while i < len(devices):
+            if devices[i].macaddress == src_device.macaddress:
+                return devices.pop(i)
+            else:
+                i+=1
+
+        return None
 
     def scan_all(self, net, interface, timeout=10):
         discovereddevices = []
@@ -114,7 +140,10 @@ class Discovery():
                 device = Device()
                 device.macaddress = r.src
                 device.ipaddress = r.psrc
-                logging.debug('Discovered device %s with ip %s' % (r.src, r.psrc))
+                device.hostname = self.resolve(r.psrc)
+                device.lastseen = datetime.now().replace(microsecond=0)
+                device.up = True
+                logging.debug('Discovered device %s with hostname %s (%s)' % (r.src, device.hostname, r.psrc))
                 discovereddevices.append(device)
         except socket.error as e:
             if e.errno == errno.EPERM:
@@ -156,3 +185,7 @@ class Discovery():
     def send_new_devices_email(self, devices):
         self.send_email('EyesPy - New Device(s) Detected', 'Test',
             render_template('email_new_devices.html', devices=devices))
+
+    def send_state_change_device_email(self, devices):
+        self.send_email('EyesPy - Device State Change(s) Detected', 'Test',
+            render_template('email_state_change_devices.html', devices=devices))
