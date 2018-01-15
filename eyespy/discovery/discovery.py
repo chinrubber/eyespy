@@ -95,7 +95,7 @@ class Discovery():
                     device.vendor = self.lookup_vendor(device.macaddress)
                 d_device = self.find_device(discovered_devices, device)
                 if not d_device:
-                    if device.up and device.important and (datetime.now() - device.lastseen).total_seconds() > 30:
+                    if device.up and device.important and (datetime.now() - device.lastseen).total_seconds() > 45:
                         logging.info('State for important device %s (%s) has changed from up to down' % (device.macaddress, device.name))
                         state_change_devices.append(device)
                         device.up = False
